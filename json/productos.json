@@ -1,0 +1,6 @@
+[
+{"codigo": "1", "nombreProducto": "SALÓN DE FIESTAS", "precioPorPersona": 200, "imagen":"imagenes/Salon.jpg"},
+{"codigo": "2", "nombreProducto": "PILETA", "precioPorPersona": 300, "imagen":"imagenes/Pileta.jpg"},
+{"codigo": "3", "nombreProducto": "PARRILLA", "precioPorPersona": 400, "imagen": "imagenes/Parrilla.jpg"},
+{"codigo": "4", "nombreProducto": "HOSPEDAJE POR DÍA", "precioPorPersona": 500, "imagen": "imagenes/Hospedaje.jpg"}
+]

@@ -1,0 +1,112 @@
+ 
+
+ 
+.articulos{
+    display: inline-block;
+    text-align: center;
+    width: max-content;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: 0%;
+    border-left: 0.1em;
+    border-bottom: 0.02cm;
+    border-style: ridge;
+    border-right: 0.1cm;
+    border-top: 0cm;
+    padding-bottom: 0.5cm;
+    border-color: rgb(219, 219, 196);
+    color: rgb(90, 94, 94);
+}
+
+.cantPersonas{    
+    height: 100%;
+    background-color: white;
+    padding-left: 1rem;     
+    border-style: groove;
+    border-width: 0.1rem;
+    border-color: rgb(211, 225, 207);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    box-shadow: 8px 8px 8px  rgb(159, 157, 157);
+}
+
+.encabezado {
+    height: 4rem;
+    background-color: rgb(17, 11, 77);
+    margin-top: 0cm;
+    padding-top: 0cm;
+    padding: auto;    
+    padding-left: 1rem;
+    padding-top: 1rem;
+    color: azure;
+    font-size: larger; 
+}
+
+.contenedorProductos{
+    box-shadow: 8px 8px 8px  rgb(159, 157, 157);
+}
+ 
+
+h3{
+    margin-top: 1rem;
+    background-color: rgb(117, 107, 228);
+    height: max-content;    
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;    
+    padding-left: 1rem;
+    color: azure;
+}
+
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+ }
+
+ li{
+     border-bottom: 0.5rem;
+    border-width: 0.1rem;
+    border-color: rgb(208, 211, 208);
+    border-style: groove;
+    height: fit-content;
+    border-top: 0cm;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: large;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.3rem;
+    color: rgb(65, 91, 91);
+    list-style: none;
+ }
+
+ .totales{
+    margin-top: 1rem;
+    background-color: rgb(117, 107, 228);
+    height: max-content;    
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;    
+    padding-left: 1rem;
+    font-style: bold;
+    margin-top: 0.1rem;
+    color: azure;    
+}
+
+
+ 
+.botonesAgregar{
+   color:rgba(92, 93, 94, 0.836);
+   margin-top: 1rem;
+}
+
+.botonesQuitar{
+    color:rgba(92, 93, 94, 0.836);
+    text-align: center;
+ }
+
+ .divCarrito{
+    box-shadow: 8px 8px 8px rgb(159, 157, 157);
+    width: fit-content;
+    margin-left: 1rem;      
+    margin-top: 1.5rem;
+ }
+
+ 
