@@ -57,6 +57,24 @@ h3{
     color: azure;
 }
 
+.divComprasRealizadas h3{
+    margin-top: 1rem;
+    background-color: rgb(228, 107, 178);
+    height: max-content;    
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;    
+    padding-left: 1rem;
+    color: azure;
+}
+
+.totalesComprasRealizadas h3{
+    margin-top: 1rem;
+    background-color: rgb(228, 107, 178);
+    height: max-content;    
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;    
+    padding-left: 1rem;
+    color: azure;
+}
+
 *{
     margin:0;
     padding: 0;
@@ -79,7 +97,7 @@ h3{
     list-style: none;
  }
 
- .totales{
+  .totales{
     margin-top: 1rem;
     background-color: rgb(117, 107, 228);
     height: max-content;    
@@ -90,8 +108,10 @@ h3{
     color: azure;    
 }
 
+.totalesComprasRealizadas{
+    background-color: rgb(228, 107, 178);
+}    
 
- 
 .botonesAgregar{
    color:rgba(92, 93, 94, 0.836);
    margin-top: 1rem;
@@ -105,8 +125,56 @@ h3{
  .divCarrito{
     box-shadow: 8px 8px 8px rgb(159, 157, 157);
     width: fit-content;
-    margin-left: 1rem;      
+    margin-left: 2rem;      
     margin-top: 1.5rem;
+    padding-left: 0%;
  }
 
- 
+ .comprasRealizadas{
+    box-shadow: 8px 8px 8px rgb(159, 157, 157);
+    width: 100vh;
+    height: fit-content;
+    margin-left: 0rem;      
+    margin-top: 0rem;
+    padding-left: 0%;
+ }
+
+ .encabezadoComprasRealizadas{
+    box-shadow: 8px 8px 8px rgb(159, 157, 157);
+    width: 100vh;
+    height: fit-content;
+    margin-left: 0rem;      
+    margin-top: 0rem;
+    padding-left: 0%;
+ }
+
+ .checkBox{     
+    margin-left: 1rem;
+ }
+
+ .MensajeFiltroSinResultado{
+    font-size: 1.5rem;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.botonesConfirmar{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 9rem;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.divComprasRealizadas{
+    max-width: fit-content;
+}
+
+
+.productosSelecComp{
+    display: flex;
+}   
+
+.divComprasRealizadas{
+    display: inline-block;
+    padding-left: 4rem;
+    margin-top: 1.5rem;
+}   

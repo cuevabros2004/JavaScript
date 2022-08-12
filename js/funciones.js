@@ -1,6 +1,25 @@
 let montoProducto;
 let montoTotalCarrito = 0;
 
+const criteriosPreciosMinimos = [];
+const criteriosPreciosMaximos = [];
+
+criteriosPreciosMinimos[0] = "0";
+criteriosPreciosMinimos[1] = "300";
+criteriosPreciosMinimos[2] = "500";
+criteriosPreciosMinimos[3] = "0";
+
+criteriosPreciosMaximos[0] = "300";
+criteriosPreciosMaximos[1] = "500";
+criteriosPreciosMaximos[2] = "99999999999999999";
+criteriosPreciosMaximos[3] = "99999999999999999";
+
+
+var list = ['Precio Menor a $ 300', 'Precio entre $ 300 y $ 500', 'Precio Mayor a $ 500', 'Todos los Productos'];
+
+var f = new Date();
+let fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
+
 
 //Clase Producto que almacenará los productos/servicios disponibles
 class Producto{
@@ -28,12 +47,25 @@ class Carrito{
     }
 }
 
+//Clase ComprasRealizadas que almacenará los productos/servicios comprados
+class ComprasRealizadas{
+    constructor(codigo, nombreProducto, cantidadPersonas, precioProducto, imagen, fechaCompra){
+        this.codigo = codigo;
+        this.nombreProducto = nombreProducto;
+        this.cantidadPersonas = cantidadPersonas;
+        this.precioProducto = precioProducto;
+        this.imagen = imagen;
+        this.fechaCompra = fechaCompra;
+    }
+}
+
 //Inicializo arrays
 const productos=[];
 const productosCarrito=[];
+const productosComprasRealizadas=[];
 
 cargarProductosJSON = () => {
-    //inserto valores en array de productos a partir del archivo de JASON (productos.json)
+    //inserto valores en array de pr oductos a partir del archivo de JASON (productos.json)
     fetch('json/productos.json')
     
     .then( (resp) => resp.json())
@@ -66,14 +98,30 @@ function eliminarProductoSeleccionado(codigo){
 
 //función que permite visualizar los productos del carrito
 function mostrarProductosDisponibles(){
+    productosFiltrados = productos.filter(el => (el.precioPorPersona>=0));
+
+    for (let i=0;i<criteriosPreciosMinimos.length;i++){
+         
+         let opt = 'chk' + i
+        
+         let optSel = document.getElementById(opt)
+
+        if (optSel.checked){
+           productosFiltrados = productos.filter(el => el.precioPorPersona>criteriosPreciosMinimos[i] && el.precioPorPersona<criteriosPreciosMaximos[i]);
+           localStorage.setItem('optSelect', opt)
+        }
+         
+    }
+    
     const contenedorServicios = document.getElementById("contenedorProductos");
 
     contenedorServicios.innerHTML = "";
 
     //Concateno cód. producto con nombre de producto para mostrar
-    for (const producto of productos){
+    for (const producto of productosFiltrados){
         const divServicios = document.createElement("div");
         divServicios.classList.add("articulos");
+      
 
        divServicios.innerHTML= `
          <h3 class="titulosCards">${producto.nombreProducto}</h3>
@@ -93,6 +141,16 @@ function mostrarProductosDisponibles(){
              
     }
     
+    if (productosFiltrados.length==0){
+
+        const mensajeServiciosNoEncontrados = document.createElement("p");
+
+        contenedorServicios.appendChild(mensajeServiciosNoEncontrados);
+
+        mensajeServiciosNoEncontrados.classList.add("MensajeFiltroSinResultado")
+
+        mensajeServiciosNoEncontrados.innerHTML = "NO EXISTEN PRODUCTOS PARA EL FILTRO SELECCIONADO"
+    }
 }
 
 //función que agrega los productos seleccionados al carrito
@@ -163,12 +221,104 @@ function mostrarProductosSeleccionados(producto){
   
      )
     } 
+
+
+
+    //función que muestra los productos seleccionados
+function mostrarComprasRealizadas(){
+        let listaProductosCompra = document.getElementById("comprasRealizadas");
+        let totalesCompra = document.getElementById("totalesComprasRealizadas");
+        let tituloCompra = document.getElementById("encabezadoComprasRealizadas");
+        
+        let titulo = document.createElement("h3");
+        tituloCompra.append(titulo)
+
+        listaProductosCompra.innerHTML = ""
+    
+            //Calculo el monto total 7del carrito
+            const montoTotalCarritoCompra = productosComprasRealizadas.reduce((acumulador, productosCarrito) => acumulador + productosCarrito.precioProducto, 0)
+                
+            productosComprasRealizadas.forEach(({codigo, nombreProducto, cantidadPersonas, precioProducto, imagen, fechaCompra}) =>{
+                let contenedor = document.createElement("li"); 
+                contenedor.innerHTML = ""
+            // contenedor.innerHTML =  nombreProducto + " $ ".padStart(80, ".") +  String(precioProducto) +  "\n";
+                
+                contenedor.innerHTML= `
+                <h3 class="titulosCards">${fechaCompra}</h3>
+                <h4 class="Precio"> PRODUCTO: ${nombreProducto} </h4>
+                <h4 class="Precio"> PRECIO:  $ ${precioProducto} </h4>
+            `;  
+
+            totalesCompra.innerHTML = "TOTAL COMPRAS: $" + montoTotalCarritoCompra
+            totalesCompra.classList.add("totalesComprasRealizadas");
+            listaProductosCompra.append(contenedor);
+                    
+            } 
+
+            )
+    } 
+
+
+    function confirmarCompra(){
+ 
+        let listaProductosCompra = document.getElementById("comprasRealizadas");
+        let totalesCompra = document.getElementById("totalesComprasRealizadas");
+        let tituloCompra = document.getElementById("encabezadoComprasRealizadas");
+        
+        let titulo = document.createElement("h3");
+        tituloCompra.append(titulo)
+
+        listaProductosCompra.innerHTML = ""
+
+        //Paso productos del carrito al array de objetos ComprasRealizadas
+        productosCarrito.forEach(({codigo, nombreProducto, cantidadPersonas, precioProducto, imagen}) =>{
+
+            productosComprasRealizadas.push(new ComprasRealizadas(codigo, nombreProducto, cantidadPersonas, precioProducto, imagen, fecha));       
+             
+        }       
+         )
+
+         let comprasRealizadasJSON = JSON.stringify(productosComprasRealizadas);
+         localStorage.setItem('productosCompras', comprasRealizadasJSON);
+         mostrarProductosDisponibles();
+
+
+        //Calculo el monto total 7del carrito
+        const montoTotalCarritoCompra = productosComprasRealizadas.reduce((acumulador, productosCarrito) => acumulador + productosCarrito.precioProducto, 0)
+    
+        productosComprasRealizadas.forEach(({codigo, nombreProducto, cantidadPersonas, precioProducto, imagen, fechaCompra}) =>{
+
+            let contenedor = document.createElement("li"); 
+            contenedor.innerHTML = ""
+           // contenedor.innerHTML =  nombreProducto + " $ ".padStart(80, ".") +  String(precioProducto) +  "\n";
+            
+            contenedor.innerHTML= `
+            <h3 class="titulosCards">${fechaCompra}</h3>
+            <h4 class="Precio"> PRODUCTO:  $ ${nombreProducto} </h4>
+            <h4 class="Precio"> PRECIO:  $ ${precioProducto} </h4>
+          `;  
+    
+           totalesCompra.innerHTML = "TOTAL COMPRAS: $" + montoTotalCarritoCompra
+           totalesCompra.classList.add("totales");
+           listaProductosCompra.append(contenedor);
+                 
+        } 
+      
+         )
+
+
+         borrarLocalStorageCarrito();
+         productosCarrito.splice(0, productosCarrito.length)
+         
+         mostrarProductosSeleccionados();
+        } 
+
 //prepara el Div donde se mostrarán los productos del carrito
 function dibujarDivCarrito(){
     let carrito = document.getElementById("encabezadoCarrito");
     let totales = document.getElementById("totales");    
     let contenedorProductos = document.getElementById("contenedorProductos"); 
-    
+    let carritoCompras = document.getElementById("carritoCompras");
  
     let titulo = document.createElement("h3");
 
@@ -176,17 +326,51 @@ function dibujarDivCarrito(){
     totales.innerText = "TOTAL CARRITO: $ 0.00"
 
     carrito.append(titulo);
+
+    let botonConfirmar = document.createElement("button");
+    botonConfirmar.innerHTML = "CONFIRMAR COMPRA";
+    carritoCompras.append(botonConfirmar);
+    botonConfirmar.classList.add("botonesConfirmar");
+    
+    botonConfirmar.addEventListener("click", () => {
+        confirmarCompra(productosCarrito);
+       }     )
     
     document.getElementById("encabezadoCarrito").className = "carrito";
     document.getElementById("totales").className = "totales";
+}
+
+function dibujarDivComprasRealizadas(){
+    
+    let encabezado = document.getElementById("encabezadoComprasRealizadas")
+    let totalCompras = document.getElementById("totalesComprasRealizadas");    
+    let contenedorComprasRealizadas = document.getElementById("comprasRealizadas"); 
+
+    let titulo = document.createElement("h3");
+    titulo.innerText = "COMPRAS REALIZADAS"
+    encabezado.append(titulo);
+
+    
+    let totales = document.createElement("h3");
+    totales.innerText = "TOTAL COMPRA: $ 0.00"
+    totalCompras.append(totales);
+    
+    document.getElementById("encabezadoComprasRealizadas").className = "carrito";
+    document.getElementById("totalesComprasRealizadas").className = "totales";
 }
 
 //función que trae los productos y cantidad de personas seleccionadas 
 //del Storage
 function traerProductosLocalStorage(){
     let itemsFromStorage = localStorage.getItem('carrito');
+    let comprasRealizadasStorage = localStorage.getItem('productosCompras');
     let cajaTextoCantPersonas = document.getElementById("cantidadPersonas");
     cajaTextoCantPersonas.value = localStorage.getItem('cantidadPersonas');
+
+    let optButtonSelect = localStorage.getItem('optSelect')
+    let optSelectL = document.getElementById(optButtonSelect)
+    
+    optSelectL.checked = true
 
     let items = JSON.parse( itemsFromStorage );
     
@@ -195,6 +379,15 @@ function traerProductosLocalStorage(){
            productosCarrito.push(items);
          })
     }
+
+    let prodComprasRealizadas = JSON.parse( comprasRealizadasStorage );
+
+    if (comprasRealizadasStorage){
+        prodComprasRealizadas.forEach(items => {
+            productosComprasRealizadas.push(items);
+         })
+    }
+
 }
 
 //función que muestra mensaje
@@ -250,15 +443,65 @@ function validarDatos(producto){
 
 }
 
+function borrarLocalStorageCarrito(){
+    localStorage.removeItem('carrito');
+}
+
+function mostrarFiltros(){
+    i = 0
+    let divCantPersonas = document.getElementById("cantPersonas");
+
+    for (var value of list) {  
+        
+       chk = document.createElement('input'); 
+        chk.setAttribute('type', 'radio');   
+        chk.setAttribute('id', 'chk' + i);
+        chk.setAttribute('name', 'radioButton');
+
+        chk.classList.add("checkBox");
+
+        var lbl = document.createElement('label');  
+        lbl.setAttribute('for', 'value' + i);
+
+        lbl.appendChild(document.createTextNode(value));
+
+        divCantPersonas.appendChild(chk);
+        divCantPersonas.appendChild(lbl);
+        i = i + 1;
+        chk.addEventListener("click", () => {        
+            mostrarProductosDisponibles();
+           })
+    }
+
+    chk3.checked = true
+}
+
 //Cargo y muestro productos disponibles que se encuentran en archivo JSON (productos.json)
 cargarProductosJSON();
 
 //llamo función que prepara el div donde se van a mostrar los productos del carrito
 dibujarDivCarrito();
 
-//llama función que trae los datos (Productos y Cant. de personas ingresada) del Storage
+//Muestro compras realizadas
+dibujarDivComprasRealizadas()
+
+//Muestro filtros 
+mostrarFiltros();
+
+//llama función que trae los datos (Productos, Cant. de personas ingresada y opción criterio seleccionada) del Storage
 traerProductosLocalStorage();
+
+//muestra los productos que ha seleccionado el usuario
 mostrarProductosSeleccionados();
+
+//muestra las compras realizadas por el usuario
+mostrarComprasRealizadas();
+
+
+
+
+
+
 
 
 
