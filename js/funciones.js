@@ -15,9 +15,9 @@ criteriosPreciosMaximos[2] = "99999999999999999";
 criteriosPreciosMaximos[3] = "99999999999999999";
 
 
-var list = ['Precio Menor a $ 300', 'Precio entre $ 300 y $ 500', 'Precio Mayor a $ 500', 'Todos los Productos'];
+let list = ['Precio Menor a $ 300', 'Precio entre $ 300 y $ 500', 'Precio Mayor a $ 500', 'Todos los Productos'];
 
-var f = new Date();
+let f = new Date();
 let fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
 
 
@@ -451,7 +451,7 @@ function mostrarFiltros(){
     i = 0
     let divCantPersonas = document.getElementById("cantPersonas");
 
-    for (var value of list) {  
+    for (let value of list) {  
         
        chk = document.createElement('input'); 
         chk.setAttribute('type', 'radio');   
@@ -460,7 +460,7 @@ function mostrarFiltros(){
 
         chk.classList.add("checkBox");
 
-        var lbl = document.createElement('label');  
+        let lbl = document.createElement('label');  
         lbl.setAttribute('for', 'value' + i);
 
         lbl.appendChild(document.createTextNode(value));
